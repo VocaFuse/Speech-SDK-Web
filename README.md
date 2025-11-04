@@ -5,13 +5,13 @@ Ship voice features faster. Complete voice pipeline: recording, transcription, a
 ## Install
 
 ```bash
-npm install @vocafuse/frontend-sdk
+npm install vocafuse
 ```
 
 ## Quick Start (Vanilla)
 
 ```ts
-import { VocaFuseSDK } from '@vocafuse/frontend-sdk'
+import { VocaFuseSDK } from 'vocafuse'
 
 // Initialize
 const sdk = new VocaFuseSDK({
@@ -45,7 +45,7 @@ btn.addEventListener('click', async () => {
 
 ```tsx
 import { useEffect, useState } from 'react'
-import { VocaFuseSDK } from '@vocafuse/frontend-sdk'
+import { VocaFuseSDK } from 'vocafuse'
 
 export default function VoiceNote() {
   const [recorder, setRecorder] = useState<any>(null)

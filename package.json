@@ -1,5 +1,5 @@
 {
-  "name": "@vocafuse/frontend-sdk",
+  "name": "vocafuse",
   "version": "0.1.0",
   "description": "VocaFuse Frontend SDK for voice recording and upload",
   "type": "module",
