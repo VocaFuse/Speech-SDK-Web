@@ -1,6 +1,6 @@
 # VocaFuse Frontend SDK
 
-Production-ready voice input within hours. Framework-friendly primitives: create and control a recorder; you own the UI.
+Ship voice features faster. Complete voice pipeline: recording, transcription, and storage in one SDK. Framework-friendly primitives: create and control a recorder; you own the UI.
 
 ## Install
 
