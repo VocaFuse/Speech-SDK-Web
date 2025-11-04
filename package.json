@@ -1,0 +1,59 @@
+{
+  "name": "@vocafuse/frontend-sdk",
+  "version": "1.0.0",
+  "description": "VocaFuse Frontend SDK for voice recording and upload",
+  "type": "module",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:types": "tsc --emitDeclarationOnly",
+    "preview": "vite preview",
+    "lint": "eslint src --max-warnings 0",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "voice",
+    "audio",
+    "recording",
+    "upload",
+    "sdk",
+    "vocafuse"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VocaFuse/Speech-SDK-Web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VocaFuse/Speech-SDK-Web/issues"
+  },
+  "homepage": "https://github.com/VocaFuse/Speech-SDK-Web#readme",
+  "author": "VocaFuse",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5",
+    "vite-plugin-dts": "^3.5.3"
+  }
+}
+
+
