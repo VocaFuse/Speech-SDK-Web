@@ -1,6 +1,6 @@
 {
   "name": "vocafuse",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "VocaFuse Frontend SDK for voice recording and upload",
   "type": "module",
   "main": "./dist/index.umd.js",
@@ -55,5 +55,3 @@
     "vite-plugin-dts": "^3.5.3"
   }
 }
-
-
