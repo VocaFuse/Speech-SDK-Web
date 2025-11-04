@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'package.json'
+      - 'package-lock.json'
       - 'src/**'
       - 'tsconfig.json'
       - 'vite.config.ts'
