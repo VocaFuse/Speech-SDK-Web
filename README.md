@@ -2,7 +2,7 @@
 
 Add cross-browser voice recording to your app in 5 minutes. Handles recording, transcription, and storage.
 
-> **Note:** Requires a backend to generate auth tokens. [Quick backend setup →](#backend-setup)
+> **Note:** Requires a backend to generate auth tokens. [Backend setup →](https://vocafuse.com/docs/server-sdks/) | [Full tutorial →](https://vocafuse.com/docs/quickstart/)
 
 ## Install
 
