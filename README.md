@@ -10,6 +10,8 @@ Add cross-browser voice recording to your app in 5 minutes. Handles recording, t
 npm install vocafuse
 ```
 
+> **Tip:** Works best with modern bundlers like Vite, Next.js, or Create React App.
+
 ## Quick Start
 
 ```tsx
