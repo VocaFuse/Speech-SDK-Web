@@ -1,6 +1,8 @@
-# VocaFuse Frontend SDK
+# VocaFuse Voice SDK
 
-Ship voice features faster. Complete voice pipeline: recording, transcription, and storage in one SDK. Framework-friendly primitives: create and control a recorder; you own the UI.
+Add cross-browser voice recording to your app in 5 minutes. Handles recording, transcription, and storage.
+
+> **Note:** Requires a backend to generate auth tokens. [Quick backend setup →](#backend-setup)
 
 ## Install
 
@@ -8,80 +10,106 @@ Ship voice features faster. Complete voice pipeline: recording, transcription, a
 npm install vocafuse
 ```
 
-## Quick Start (Vanilla)
-
-```ts
-import { VocaFuseSDK } from 'vocafuse'
-
-// Initialize
-const sdk = new VocaFuseSDK({
-  tokenEndpoint: '/api/token',            // your backend endpoint that returns VocaFuse tokens
-  apiBaseUrl: 'https://api.vocafuse.com'  // optional; defaults to https://api.vocafuse.com
-})
-await sdk.init()
-
-// Create a recorder
-const recorder = sdk.createRecorder({
-  maxDuration: 60,
-  onStateChange: (state) => console.log('state:', state),
-  onRecordProgress: (s) => console.log('seconds:', s),
-  onUploadProgress: (p) => console.log('upload %:', p),
-  onComplete: (result) => console.log('uploaded:', result.voicenote_id),
-  onError: (err) => console.error(err)
-})
-
-// Wire up any UI
-const btn = document.getElementById('record-btn')!
-btn.addEventListener('click', async () => {
-  if (recorder.isRecording) {
-    await recorder.stop() // auto-uploads
-  } else {
-    await recorder.start()
-  }
-})
-```
-
-## React Example
+## Quick Start
 
 ```tsx
 import { useEffect, useState } from 'react'
 import { VocaFuseSDK } from 'vocafuse'
 
-export default function VoiceNote() {
-  const [recorder, setRecorder] = useState<any>(null)
+export default function VoiceRecorder() {
+  const [recorder, setRecorder] = useState(null)
 
   useEffect(() => {
-    (async () => {
-      const sdk = new VocaFuseSDK({ tokenEndpoint: '/api/token' })
-      await sdk.init()
-      setRecorder(sdk.createRecorder({ onStateChange: () => setRecorder(r => ({ ...r })) }))
-    })()
+    const sdk = new VocaFuseSDK({ 
+      tokenEndpoint: '/api/token' // your backend returns VocaFuse tokens
+    })
+    
+    sdk.init().then(() => {
+      setRecorder(sdk.createRecorder({
+        maxDuration: 60,
+        onComplete: (result) => console.log('Uploaded:', result.voicenote_id),
+        onError: (err) => console.error(err),
+        onStateChange: () => setRecorder(r => ({ ...r })) // trigger re-render
+      }))
+    })
   }, [])
 
   if (!recorder) return <button disabled>Loading…</button>
 
   return (
     <button onClick={() => recorder.isRecording ? recorder.stop() : recorder.start()}>
-      {recorder.isRecording ? 'Stop Recording' : 'Start Recording'}
+      {recorder.isRecording ? '⏹ Stop' : '🎤 Record'}
     </button>
   )
 }
 ```
 
-## API
+**That's it!** The SDK handles microphone access, recording, and upload automatically.
 
-- new VocaFuseSDK(config)
-  - tokenEndpoint (string, required)
-  - apiBaseUrl (string, default: https://api.vocafuse.com)
-- await sdk.init()
-- sdk.createRecorder(options) -> VoiceRecorder
-- sdk.getInfo() -> { version, voicenoteSupported, tokenEndpoint, apiBaseUrl, identity }
+## API Reference
 
-### VoiceRecorder
-- Properties: state, duration, isRecording, isUploading
-- Methods: start(), stop(), cancel(), pause(), resume(), destroy()
-- Options: maxDuration?, autoUpload? (default true)
-- Callbacks: onStateChange, onRecordProgress, onUploadProgress, onComplete, onError, onCancel
+### SDK Setup
+```javascript
+const sdk = new VocaFuseSDK({
+  tokenEndpoint: '/api/token',  // required - your backend endpoint
+  apiBaseUrl: 'https://api.vocafuse.com'  // optional
+})
+
+await sdk.init()  // fetches initial token
+```
+
+### Create Recorder
+```javascript
+const recorder = sdk.createRecorder({
+  maxDuration: 60,        // seconds (default: 60)
+  autoUpload: true,       // upload on stop (default: true)
+  
+  // Callbacks
+  onStateChange: (state) => {},      // 'idle' | 'recording' | 'uploading' | 'uploaded'
+  onRecordProgress: (seconds) => {}, // fired every 100ms while recording
+  onUploadProgress: (percent) => {}, // 0-100
+  onComplete: (result) => {},        // { voicenote_id, url, ... }
+  onError: (error) => {},
+  onCancel: () => {}
+})
+```
+
+### Recorder Methods
+```javascript
+await recorder.start()   // start recording (requests mic permission)
+await recorder.stop()    // stop and auto-upload
+await recorder.cancel()  // stop without uploading
+recorder.pause()         // pause recording
+recorder.resume()        // resume recording
+recorder.destroy()       // cleanup
+```
+
+### Recorder Properties
+```javascript
+recorder.state        // current state
+recorder.duration     // current duration in seconds
+recorder.isRecording  // boolean
+recorder.isUploading  // boolean
+```
+
+## Common Issues
+
+**Microphone not working?**
+- Requires HTTPS (or localhost for development)
+- User must grant microphone permission
+- Check: `sdk.isVoicenoteSupported()` returns `true`
+
+**Upload failing?**
+- Verify your `/api/token` endpoint returns valid VocaFuse tokens
+- Check browser console for errors
+- Use `onError` callback to handle errors
+
+**Need help?**
+- [GitHub Issues](https://github.com/VocaFuse/Speech-SDK-Web/issues)
+- [Documentation](https://vocafuse.com/docs)
 
 ## Notes
-- Keep your tokenEndpoint on your backend. Do not expose credentials in the browser.
+
+- TypeScript types included
+- Works with React, Vue, Next.js, Vite, etc.
+- Supports Chrome, Firefox, Safari, Edge (modern versions)
